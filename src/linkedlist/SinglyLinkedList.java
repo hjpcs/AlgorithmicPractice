@@ -154,7 +154,7 @@ public class SinglyLinkedList {
     public void printAll(){
         Node p = head;
         while (p != null){
-            System.out.println(p.data + " ");
+            System.out.print(p.data + " ");
             p = p.next;
         }
         System.out.println();
@@ -176,7 +176,7 @@ public class SinglyLinkedList {
             //将cur插入到Head后面
             cur.next = Head.next;
             Head.next = cur;
-            System.out.println("first " + Head.data);
+            ///System.out.println("first " + Head.data);
             cur = next; //将next中保存的下一个cur值重新赋给cur
         }
         return Head; //返回从p结点之后(包括p)链表的逆序的头结点
@@ -198,19 +198,102 @@ public class SinglyLinkedList {
         return  r; // 返回从p结点之前(包括p)链表的逆序的头结点
     }
 
+    //判断true or false
+    public boolean TFResult(Node left, Node right){
+        Node l = left;
+        Node r = right;
+        System.out.println("left:" + l.data);
+        System.out.println("right:" + r.data);
+        while (l != null && r != null){
+            if (l.data == r.data){
+                l = l.next;
+                r = r.next;
+                continue; //相等继续
+            } else {
+                break; //不等跳出循环
+            }
+        }
+        //是回文的话l r都将指向null
+        //不是回文的话while循环跳出以后l r都不指向null
+        if (l == null && r == null){
+            System.out.println("结果为");
+            return true;
+        } else {
+            System.out.println("结果为");
+            return false;
+        }
+    }
 
+    //判断是否为回文
+    public boolean palindrome(){
+        if (head == null){
+            return false;
+        } else {
+            System.out.println("开始执行找到中间结点");
+            Node q = head;
+            Node p = head;
+            if (p.next == null){
+                System.out.println("只有一个元素");
+                return true;
+            }
+            while (q.next != null && q.next.next != null){
+                q = q.next.next; //快指针前进两步
+                p = p.next; //慢指针前进一步
+            }
+            //while结束时，结点数目为奇数，q.next == null，为偶数，q.next.next == null
+            System.out.println("中间结点" + p.data);
+            Node leftLink = null;
+            Node rightLink = null;
+            if (q.next == null){
+                //p一定为整个链表的中点，且结点数目为奇数
+                //所以舍弃p结点，左右两边结点数目为(n-1)/2，n为结点总数
+                System.out.println("开始执行奇数结点的回文判断");
+                rightLink = p.next;
+                leftLink = inverseLinkList(p).next;
+                System.out.println("左边第一个结点" + leftLink.data);
+                System.out.println("右边第一个结点" + rightLink.data);
+            } else {
+                //p，p.next均为中点，链表中间的两个位置，结点数目为偶数
+                //左右两边结点数目为n/2，n为结点总数
+                System.out.println("开始执行偶数结点的回文判断");
+                rightLink = p.next;
+                leftLink = inverseLinkList(p);
+            }
+            return TFResult(leftLink, rightLink);
+        }
+    }
+
+    public static void main(String[] args){
+        SinglyLinkedList link = new SinglyLinkedList();
+        int data[] = {1,2,5,3,4};
+        //int data[] = {1,5,3,3,5,1};
+        for (int i = 0; i < data.length; i++){
+            link.insertTail(data[i]);
+            //link.insertToHead(data[i]);
+        }
+        System.out.println("打印原始链表:");
+        link.printAll();
+        if (link.palindrome()){
+            System.out.println("是回文");
+        } else {
+            System.out.println("不是回文");
+        }
+
+        SinglyLinkedList linkedList = new SinglyLinkedList();
+        for (int i = 0; i < data.length; i++){
+            linkedList.insertTail(data[i]);
+        }
+        System.out.println("打印原始链表:");
+        linkedList.printAll();
+        System.out.println("打印翻转后链表:");
+        Node p = linkedList.head;
+        /*linkedList.head = linkedList.inverseLinkList_head(p).next;
+        linkedList.printAll();*/
+        while (p.next != null){
+            p = p.next;
+        }
+        //System.out.println(p.data);
+        linkedList.head = linkedList.inverseLinkList(p);
+        linkedList.printAll();
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
