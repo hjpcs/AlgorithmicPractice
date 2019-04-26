@@ -18,7 +18,7 @@ public class StackBasedLinkedList {
         }
     }
 
-    private Node head = null;
+    private Node head;
 
     //入栈操作
     public void push(int value){
@@ -47,6 +47,11 @@ public class StackBasedLinkedList {
             p = p.next;
         }
         System.out.println();
+    }
+
+    //清空栈
+    public void clear(){
+        head = null;
     }
 
     /*public static void main(String[] args){
